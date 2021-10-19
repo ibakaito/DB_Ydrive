@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>SpringBoot Sample4-1</title>
+</head>
+
+<body>
+  <h1>Authorized! <span sec:authentication="name"></span>
+  </h1>
+  <a href="/logout">ログアウト</a>
+
+  <div><a href="/sample4/step2/1">小屋に最初に入室した人</a></div>
+
+  <div th:if="${chamber2}">
+    ID:[[${chamber2.id}]]
+    入室者:[[${chamber2.user}]]
+    number:[[${chamber2.number}]]
+  </div>
+
+</body>
+
+</html>
