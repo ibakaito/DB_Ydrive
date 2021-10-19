@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ydrive.db_ydrive.model.Chamber;
 import ydrive.db_ydrive.model.ChamberMapper;
-//import ydrive.db_ydrive.model.ChamberUser;
-//import ydrive.db_ydrive.model.UserInfo;
+import ydrive.db_ydrive.model.ChamberUser;
+import ydrive.db_ydrive.model.UserInfo;
 
 @Controller
 @RequestMapping("/sample4")
@@ -62,5 +62,37 @@ public class Sample41Controller {
     model.addAttribute("chambers5", chambers5);
     return "sample44.html";
   }
+
+  @GetMapping("step6")
+  public String sample46() {
+    return "sample46.html";
+  }
+
+  @GetMapping("step7")
+  @Transactional
+  public String sample47(ModelMap model) {
+    ArrayList<ChamberUser> chamberUsers7 = chamberMapper.selectAllChamberUser();
+    model.addAttribute("chamberUsers7", chamberUsers7);
+    return "sample46.html";
+  }
+
+  @PostMapping("step8")
+  @Transactional
+  public String sample48(@RequestParam Double height, ModelMap model, Principal prin) {
+    String loginUser = prin.getName(); // ログインユーザ情報
+    UserInfo ui = new UserInfo();
+    ui.setUser(loginUser);
+    ui.setHeight(height);
+    try {
+      chamberMapper.insertUserInfo(ui);
+    } catch (RuntimeException e) {// 既に身長が登録されているユーザでさらに登録しようとすると実行時例外が発生するので，コンソールに出力してinsertをSkipする
+      System.out.println("Exception:" + e.getMessage());
+    }
+    // insert後にすべての身長が登録されているユーザを取得する
+    ArrayList<ChamberUser> chamberUsers7 = chamberMapper.selectAllChamberUser();
+    model.addAttribute("chamberUsers7", chamberUsers7);
+    return "sample46.html";
+  }
+
 
 }
