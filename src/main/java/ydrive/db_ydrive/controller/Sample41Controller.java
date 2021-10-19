@@ -30,12 +30,37 @@ public class Sample41Controller {
     return "sample41.html";
   }
 
+  @GetMapping("step4")
+  public String sample44() {
+    return "sample44.html";
+  }
+
   @GetMapping("step2/{id}")
   public String sample42(@PathVariable Integer id, ModelMap model) {
     Chamber chamber2 = chamberMapper.selectById(id);
     model.addAttribute("chamber2", chamber2);
 
     return "sample41.html";
+  }
+
+  @PostMapping("step3")
+  @Transactional
+  public String sample43(@RequestParam Integer number, ModelMap model, Principal prin) {
+    String loginUser = prin.getName(); // ログインユーザ情報
+    Chamber chamber3 = new Chamber();
+    chamber3.setNumber(number);
+    chamber3.setUser(loginUser);
+    chamberMapper.insertChamber(chamber3);
+    model.addAttribute("chamber3", chamber3);
+    // System.out.println("ID:" + chamber3.getId());
+    return "sample41.html";
+  }
+
+  @PostMapping("step5")
+  public String sample45(@RequestParam Integer number, ModelMap model) {
+    ArrayList<Chamber> chambers5 = chamberMapper.selectAllByNumber(number);
+    model.addAttribute("chambers5", chambers5);
+    return "sample44.html";
   }
 
 }
